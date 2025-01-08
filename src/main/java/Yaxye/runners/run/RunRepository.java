@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -19,11 +20,19 @@ public class RunRepository {
     }
 
    Optional<Run> findById(Integer id) {
-        return runs.stream() .filter(run -> run.id()==id).findFirst();
+        return runs.stream().filter(run -> run.id()==id).findFirst();
     }
 
     void create(Run run) {
         runs.add(run);
+    }
+
+    void update(Run run, Integer id) {
+        Optional<Run> existingRun = findById(id);
+        if(existingRun.isPresent()) {
+            runs.set(runs.indexOf(existingRun.get()), run);
+        }
+
     }
 
     @PostConstruct
